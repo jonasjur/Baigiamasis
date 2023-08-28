@@ -1,0 +1,89 @@
+<style>
+.category-form {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.category-label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.category-select {
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.filter-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    background-color: #555;
+}
+
+.video-thumbnail {
+    width: 100%;
+    height: auto;
+}
+
+.video-thumbnail-link:hover {
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.video-title-link:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+.video-title {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.video-uploader, .video-date {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 5px;
+}</style>
+
+{% extends 'videos/base.html' %}
+
+{% block content %}
+<div class="container">
+    <form class="category-form" action="{% url 'index' %}" method="get">
+        <label class="category-label" for="category-select">Select a Category:</label>
+        <select class="category-select" name="category" id="category-select">
+            <option value="0">All Categories</option>
+            {% for category in categories %}
+            <option value="{{ category.pk }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <button class="filter-button" type="submit">Filter</button>
+    </form>
+    <div class="row justify-content-center">
+        {% for video in videos %}
+        <div class="card col-md-3 col-sm-12 mr-md-2 mt-5 p-3 border-0">
+            <a class="video-thumbnail-link" href="{% url 'video-detail' video.pk %}">
+                <img class="video-thumbnail" src="/media/{{ video.thumbnail }}" alt="{{ video.title }}">
+            </a>
+            <div class="card-body">
+                <a class="video-title-link" href="{% url 'video-detail' video.pk %}">
+                    <h5 class="video-title">{{ video.title }}</h5>
+                </a>
+                <p class="video-uploader">{{ video.uploader }}</p>
+                <p class="video-date">{{ video.date_posted | date:"M d, Y" }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
