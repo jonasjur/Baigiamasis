@@ -11,8 +11,7 @@ class ProfileForm(forms.ModelForm):
         cleaned_data = super().clean()
         image = cleaned_data.get('image')
         if not image:
-            raise forms.ValidationError("Profile image is required.")
-        return cleaned_data
+            self.cleaned_data['image'] = 'uploads/profile_pics/default.jpg'
 
     def signup(self, request, user):
         user.save()
